@@ -1,0 +1,15 @@
+{
+  "name": "provod",
+  "version": "0.1.0",
+  "description": "Official Provod integration for Claude.",
+  "author": { "name": "Provod", "url": "https://provod.ai" },
+  "homepage": "https://provod.ai",
+  "repository": "https://github.com/provod-ai/plugin",
+  "license": "Apache-2.0",
+  "icon": "../../../assets/provod-icon.svg",
+  "mcp": {
+    "type": "streamable_http",
+    "url": "https://api.provod.ai/mcp",
+    "auth": { "type": "oauth", "install": "on_install", "client_id": "REPLACE_WITH_PROVOD_OAUTH_CLIENT_ID" }
+  }
+}

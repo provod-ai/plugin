@@ -1,0 +1,22 @@
+{
+  "name": "provod",
+  "owner": { "name": "Provod", "email": "REPLACE_WITH_SUPPORT_EMAIL" },
+  "metadata": {
+    "description": "Official Provod integration for Claude.",
+    "homepage": "https://provod.ai",
+    "repository": "https://github.com/provod-ai/plugin",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "provod",
+      "source": "./plugins/provod",
+      "description": "Use Provod's authenticated hosted MCP tools from Claude.",
+      "version": "0.1.0",
+      "author": { "name": "Provod", "url": "https://provod.ai" },
+      "homepage": "https://provod.ai",
+      "repository": "https://github.com/provod-ai/plugin",
+      "license": "Apache-2.0"
+    }
+  ]
+}

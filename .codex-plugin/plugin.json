@@ -1,0 +1,18 @@
+{
+  "name": "provod",
+  "display_name": "Provod",
+  "description": "Connect Codex to Provod's hosted creative AI workspace through the authenticated MCP server.",
+  "version": "0.1.0",
+  "author": { "name": "Provod", "url": "https://provod.ai" },
+  "homepage": "https://provod.ai",
+  "repository": "https://github.com/provod-ai/plugin",
+  "license": "Apache-2.0",
+  "icon": "../assets/provod-icon.svg",
+  "mcp": {
+    "transport": "streamable_http",
+    "url": "https://api.provod.ai/mcp",
+    "auth": "oauth",
+    "install": "on_install",
+    "client_id": "REPLACE_WITH_PROVOD_OAUTH_CLIENT_ID"
+  }
+}

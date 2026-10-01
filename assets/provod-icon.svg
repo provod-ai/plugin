@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="240" viewBox="0 0 640 240" role="img" aria-labelledby="title desc">
+  <title id="title">Provod</title>
+  <desc id="desc">Temporary Provod marketplace branding asset.</desc>
+  <defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#6d4aff"/><stop offset="1" stop-color="#17d6c2"/></linearGradient></defs>
+  <rect width="640" height="240" rx="40" fill="#111322"/>
+  <path d="M92 58h45c33 0 53 18 53 45s-20 45-53 45h-20v34H92V58zm25 22v46h18c20 0 30-8 30-23s-10-23-30-23h-18z" fill="url(#g)"/>
+  <text x="225" y="143" fill="#fff" font-family="Arial,sans-serif" font-size="58" font-weight="700" letter-spacing="2">PROVOD</text>
+</svg>

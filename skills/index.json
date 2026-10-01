@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "version": "0.1.0",
+  "skills": [
+    {
+      "name": "provod-mcp",
+      "description": "Use when routing work through the hosted Provod MCP.",
+      "path": "skills/provod-mcp/SKILL.md",
+      "sha256": "719a39b792b4a66d7f1f4e5925fbbf8f1432a3cf089c30f4eba12af950416b94"
+    },
+    {
+      "name": "provod-media",
+      "description": "Use when retrieving and presenting Provod media results.",
+      "path": "skills/provod-media/SKILL.md",
+      "sha256": "ffe0f5edbc7d3b79fe5081b5242021ad92a4eb6b0d700a39f8969f89c3023fc1"
+    },
+    {
+      "name": "provod-provider",
+      "description": "Use when selecting a live Provod generation model.",
+      "path": "skills/provod-provider/SKILL.md",
+      "sha256": "86e1fe71ed1bad8412992d6daf755a411420ef3f701be61cec2577a65713e26f"
+    }
+  ]
+}

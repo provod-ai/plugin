@@ -1,0 +1,12 @@
+{
+  "mcp_server": "provod",
+  "authentication": "ON_INSTALL",
+  "oauth": {
+    "client_id": "REPLACE_WITH_PROVOD_OAUTH_CLIENT_ID"
+  },
+  "notes": [
+    "PLACEHOLDER: replace client_id before marketplace submission.",
+    "The client_id is public OAuth metadata; never add a client_secret or access token.",
+    "OAuth authorization and token endpoints are discovered from the MCP server metadata."
+  ]
+}
