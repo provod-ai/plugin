@@ -19,6 +19,7 @@ class PluginValidationTests(unittest.TestCase):
         self.write_json(".codex-plugin/plugin.json", {"mcp": {"transport": "streamable_http", "url": ENDPOINT, "auth": "oauth", "install": "on_install", "client_id": PLACEHOLDER}})
         self.write_json(".claude-plugin/marketplace.json", {"plugins": [{"source": "./plugins/provod"}]})
         self.write_json("plugins/provod/.claude-plugin/plugin.json", {"mcp": {"type": "streamable_http", "url": ENDPOINT, "auth": {"type": "oauth", "install": "on_install", "client_id": PLACEHOLDER}}})
+        self.write_json("mcp.json", {"mcpServers": {"provod": {"type": "streamable-http", "url": ENDPOINT}}})
 
     def tearDown(self):
         self.tmp.cleanup()
@@ -40,6 +41,11 @@ class PluginValidationTests(unittest.TestCase):
     def test_rejects_credentials_and_private_paths(self):
         (self.root / ".env").write_text("TOKEN=secret", encoding="utf-8")
         self.assertTrue(any("private credential-like path" in error for error in check(self.root)))
+
+    def test_rejects_stdio_fallback(self):
+        self.write_json("mcp.json", {"mcpServers": {"provod": {"type": "stdio", "command": "provod"}}})
+        errors = check(self.root)
+        self.assertTrue(any("CLI/stdio fallback" in error for error in errors))
 
 
 if __name__ == "__main__":

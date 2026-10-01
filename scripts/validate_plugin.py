@@ -61,6 +61,19 @@ def validate(root: Path) -> list[str]:
         for key, value in (("type", "oauth"), ("install", "on_install"), ("client_id", PLACEHOLDER)):
             if not isinstance(auth, dict) or auth.get(key) != value:
                 errors.append(f"Claude OAuth {key} must be {value!r}")
+    portable = docs.get("mcp.json")
+    if isinstance(portable, dict):
+        servers = portable.get("mcpServers")
+        server = servers.get("provod") if isinstance(servers, dict) else None
+        if not isinstance(server, dict):
+            errors.append("portable MCP manifest must define the provod server")
+        else:
+            if server.get("type") != "streamable-http":
+                errors.append("portable MCP transport must be streamable-http; CLI/stdio fallback is forbidden")
+            if server.get("url") != ENDPOINT:
+                errors.append(f"portable MCP url must be {ENDPOINT!r}")
+            if server.get("type") == "stdio" or "command" in server:
+                errors.append("portable MCP must not contain a CLI/stdio fallback")
     for path in root.rglob("*"):
         if not path.is_file() or ".git" in path.parts or path.suffix.lower() in {".png", ".jpg", ".jpeg", ".gif", ".ico"}:
             continue
