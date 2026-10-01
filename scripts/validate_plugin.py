@@ -9,9 +9,9 @@ from pathlib import Path
 from typing import Any
 
 ROOT_REQUIRED = (
-    "README.md", "LICENSE", "SECURITY.md",
+    "README.md", "LICENSE", "SECURITY.md", "plugin.json",
     ".codex-plugin/plugin.json", ".claude-plugin/marketplace.json",
-    "plugins/provod/.claude-plugin/plugin.json",
+    "plugins/provod/.claude-plugin/plugin.json", "plugins/provod/.mcp.json",
 )
 ENDPOINT = "https://api.provod.ai/mcp"
 PLACEHOLDER = "REPLACE_WITH_PROVOD_OAUTH_CLIENT_ID"
@@ -22,8 +22,8 @@ SECRET_PATTERNS = (
     re.compile(r"\bsk-[A-Za-z0-9]{20,}\b"),
     re.compile(r"(?i)\b(?:client_secret|access_token|refresh_token)\s*[:=]"),
 )
-MCP_CONFIGS = ("mcp.json", "oauth.json")
-MANIFESTS = (".codex-plugin/plugin.json", "plugins/provod/.claude-plugin/plugin.json", ".agents/plugins/marketplace.json", ".claude-plugin/marketplace.json")
+MCP_CONFIGS = ("mcp.json", "oauth.json", "plugins/provod/.mcp.json")
+MANIFESTS = ("plugin.json", ".codex-plugin/plugin.json", "plugins/provod/.claude-plugin/plugin.json", ".agents/plugins/marketplace.json", ".claude-plugin/marketplace.json")
 
 
 def _require(mapping: dict[str, Any], key: str, kind: type, errors: list[str], path: str) -> Any:
@@ -37,6 +37,12 @@ def _validate_manifest_schema(rel: str, value: Any, errors: list[str]) -> None:
     if not isinstance(value, dict):
         errors.append(f"{rel} must be a JSON object")
         return
+    if rel == "plugin.json":
+        for key in ("$schema", "name", "version", "description"):
+            _require(value, key, str, errors, rel)
+        extensions = _require(value, "extensions", dict, errors, rel)
+        if isinstance(extensions, dict) and not isinstance(extensions.get("com.openai"), dict):
+            errors.append(f"{rel}.extensions.com.openai must be an object")
     if rel in (".codex-plugin/plugin.json", "plugins/provod/.claude-plugin/plugin.json", ".agents/plugins/marketplace.json"):
         for key in ("name", "version", "description"):
             _require(value, key, str, errors, rel)
@@ -54,16 +60,17 @@ def _validate_mcp_config(rel: str, value: Any, errors: list[str]) -> None:
     if not isinstance(value, dict):
         errors.append(f"{rel} must be a JSON object")
         return
-    if rel == "mcp.json":
+    if rel in ("mcp.json", "plugins/provod/.mcp.json"):
         servers = _require(value, "mcpServers", dict, errors, rel)
         server = servers.get("provod") if isinstance(servers, dict) else None
         if not isinstance(server, dict):
             errors.append("mcp.json.mcpServers.provod must be an object")
         else:
-            if server.get("type") != "streamable-http":
-                errors.append("mcp.json provod type must be 'streamable-http'")
+            expected_type = "http" if rel == "plugins/provod/.mcp.json" else "streamable-http"
+            if server.get("type") != expected_type:
+                errors.append(f"{rel} provod type must be {expected_type!r}")
             if server.get("url") != ENDPOINT:
-                errors.append(f"mcp.json provod url must be {ENDPOINT!r}")
+                errors.append(f"{rel} provod url must be {ENDPOINT!r}")
     else:
         if value.get("mcp_server") != "provod":
             errors.append("oauth.json mcp_server must be 'provod'")

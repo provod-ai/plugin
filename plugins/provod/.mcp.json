@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "provod": {
+      "type": "http",
+      "url": "https://api.provod.ai/mcp"
+    }
+  }
+}

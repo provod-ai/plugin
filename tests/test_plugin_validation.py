@@ -12,11 +12,14 @@ class PluginValidationTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.root = Path(self.tmp.name)
-        for rel in ("README.md", "LICENSE", "SECURITY.md", ".codex-plugin/plugin.json",
-                    ".claude-plugin/marketplace.json", "plugins/provod/.claude-plugin/plugin.json"):
+        for rel in ("README.md", "LICENSE", "SECURITY.md", "plugin.json", ".codex-plugin/plugin.json",
+                    ".claude-plugin/marketplace.json", "plugins/provod/.claude-plugin/plugin.json",
+                    "plugins/provod/.mcp.json"):
             (self.root / rel).parent.mkdir(parents=True, exist_ok=True)
             (self.root / rel).write_text("public\n", encoding="utf-8")
         self.write_json(".codex-plugin/plugin.json", {"name": "provod", "version": "0.1.0", "description": "public", "capabilities": [], "mcp": {"transport": "streamable_http", "url": ENDPOINT, "auth": "oauth", "install": "on_install", "client_id": PLACEHOLDER}})
+        self.write_json("plugin.json", {"$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json", "name": "provod", "version": "0.1.0", "description": "public", "extensions": {"com.openai": {}}})
+        self.write_json("plugins/provod/.mcp.json", {"mcpServers": {"provod": {"type": "http", "url": ENDPOINT}}})
         self.write_json(".claude-plugin/marketplace.json", {"plugins": [{"source": "./plugins/provod"}]})
         self.write_json("plugins/provod/.claude-plugin/plugin.json", {"name": "provod", "version": "0.1.0", "description": "public", "capabilities": [], "mcp": {"type": "streamable_http", "url": ENDPOINT, "auth": {"type": "oauth", "install": "on_install", "client_id": PLACEHOLDER}}})
 

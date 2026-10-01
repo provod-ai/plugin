@@ -25,8 +25,10 @@ class PackagingAndSecurityTests(unittest.TestCase):
                 self.assertFalse(any(part in {".env", ".env.local", "credentials", "secrets"} for name in names for part in Path(name).parts))
                 handle.extractall(extract)
             self.assertEqual(check(extract), [])
+            self.assertTrue((extract / "plugin.json").is_file())
             self.assertTrue((extract / ".codex-plugin/plugin.json").is_file())
             self.assertTrue((extract / "plugins/provod/.claude-plugin/plugin.json").is_file())
+            self.assertTrue((extract / "plugins/provod/.mcp.json").is_file())
 
     def test_mcp_and_oauth_configs_are_consistent(self):
         mcp = json.loads((ROOT / "mcp.json").read_text())
