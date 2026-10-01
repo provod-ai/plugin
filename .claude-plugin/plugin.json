@@ -1,0 +1,18 @@
+{
+  "name": "provod",
+  "display_name": "Provod AI",
+  "description": "Official Provod integration for Claude.",
+  "version": "0.1.0",
+  "author": { "name": "Provod", "url": "https://provod.ai" },
+  "homepage": "https://provod.ai",
+  "repository": "https://github.com/provod-ai/plugin",
+  "license": "Apache-2.0",
+  "icon": "../assets/provod-icon.svg",
+  "marketplace": "./marketplace.json",
+  "publisher": "REPLACE_WITH_LEGAL_ENTITY_NAME",
+  "support": "REPLACE_WITH_SUPPORT_URL",
+  "legal": {
+    "privacy_url": "REPLACE_WITH_PRIVACY_POLICY_URL",
+    "terms_url": "REPLACE_WITH_TERMS_URL"
+  }
+}

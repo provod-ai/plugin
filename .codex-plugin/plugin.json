@@ -1,13 +1,53 @@
 {
   "name": "provod",
-  "display_name": "Provod",
-  "description": "Connect Codex to Provod's hosted creative AI workspace through the authenticated MCP server.",
+  "display_name": "Provod AI",
+  "description": "Discover live AI models, create images and videos, and manage media through Provod's hosted MCP service.",
+  "listing": {
+    "short_description": "Live model discovery, image/video generation, media workflows, and account visibility in Codex.",
+    "long_description": "Provod connects Codex to a hosted creative AI workspace. Explore the live model catalog, submit asynchronous image and video jobs, upload or import reference media, wait for completed results, and inspect account balance, transactions, workspaces, and plans. Purchases are a separate action that requires explicit confirmation.",
+    "category": "productivity",
+    "keywords": ["image generation", "video generation", "media", "creative AI", "MCP"]
+  },
   "version": "0.1.0",
   "author": { "name": "Provod", "url": "https://provod.ai" },
   "homepage": "https://provod.ai",
   "repository": "https://github.com/provod-ai/plugin",
   "license": "Apache-2.0",
   "icon": "../assets/provod-icon.svg",
+  "capabilities": [
+    "models_explore",
+    "generate_image",
+    "generate_video",
+    "media_upload",
+    "media_import_url",
+    "jobs_wait",
+    "show_generations",
+    "balance",
+    "transactions",
+    "list_workspaces",
+    "show_plans_and_credits",
+    "confirm_billing_purchase"
+  ],
+  "data_boundaries": {
+    "destination": "https://api.provod.ai/mcp",
+    "sent": ["prompts and generation parameters", "user-selected media or import URLs", "job/media identifiers", "account and billing queries"],
+    "not_collected_by_plugin": ["local files without an explicit upload", "provider API keys", "OAuth secrets in prompts or repository files"],
+    "user_controls": ["OAuth authorization", "user-initiated generation and media upload", "explicit confirmation before billing purchase"],
+    "disclosure": "Do not infer retention, training, residency, or pricing guarantees from this manifest; see the linked privacy and terms pages."
+  },
+  "publisher": {
+    "name": "REPLACE_WITH_LEGAL_ENTITY_NAME",
+    "website": "https://provod.ai",
+    "status": "PLACEHOLDER_REQUIRES_OWNER_APPROVAL"
+  },
+  "support": {
+    "url": "REPLACE_WITH_SUPPORT_URL",
+    "email": "REPLACE_WITH_SUPPORT_EMAIL"
+  },
+  "legal": {
+    "privacy_url": "REPLACE_WITH_PRIVACY_POLICY_URL",
+    "terms_url": "REPLACE_WITH_TERMS_URL"
+  },
   "mcp": {
     "transport": "streamable_http",
     "url": "https://api.provod.ai/mcp",

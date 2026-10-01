@@ -1,11 +1,34 @@
 {
   "name": "provod",
-  "owner": { "name": "Provod", "email": "REPLACE_WITH_SUPPORT_EMAIL" },
+  "display_name": "Provod AI",
+  "owner": { "name": "REPLACE_WITH_LEGAL_ENTITY_NAME", "email": "REPLACE_WITH_SUPPORT_EMAIL" },
   "metadata": {
-    "description": "Official Provod integration for Claude.",
+    "description": "Live model discovery, image/video generation, media workflows, and account visibility for Claude.",
+    "long_description": "Connect Claude to Provod's hosted creative AI workspace. Discover live models, run asynchronous image and video jobs, upload or import reference media, and inspect account data. Billing purchases remain behind explicit confirmation.",
     "homepage": "https://provod.ai",
     "repository": "https://github.com/provod-ai/plugin",
-    "version": "0.1.0"
+    "version": "0.1.0",
+    "category": "productivity",
+    "keywords": ["image generation", "video generation", "media", "creative AI", "MCP"]
+  },
+  "publisher": {
+    "name": "REPLACE_WITH_LEGAL_ENTITY_NAME",
+    "website": "https://provod.ai",
+    "status": "PLACEHOLDER_REQUIRES_OWNER_APPROVAL"
+  },
+  "support": {
+    "url": "REPLACE_WITH_SUPPORT_URL",
+    "email": "REPLACE_WITH_SUPPORT_EMAIL"
+  },
+  "legal": {
+    "privacy_url": "REPLACE_WITH_PRIVACY_POLICY_URL",
+    "terms_url": "REPLACE_WITH_TERMS_URL"
+  },
+  "data_boundaries": {
+    "destination": "https://api.provod.ai/mcp",
+    "sent": ["prompts and generation parameters", "user-selected media or import URLs", "job/media identifiers", "account and billing queries"],
+    "user_controls": ["OAuth authorization", "user-initiated generation and media upload", "explicit confirmation before billing purchase"],
+    "disclosure": "Do not infer retention, training, residency, or pricing guarantees from this manifest; see the linked privacy and terms pages."
   },
   "plugins": [
     {
@@ -16,7 +39,8 @@
       "author": { "name": "Provod", "url": "https://provod.ai" },
       "homepage": "https://provod.ai",
       "repository": "https://github.com/provod-ai/plugin",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "icon": "./assets/provod-icon.svg"
     }
   ]
 }
