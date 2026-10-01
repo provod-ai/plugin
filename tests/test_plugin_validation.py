@@ -16,9 +16,9 @@ class PluginValidationTests(unittest.TestCase):
                     ".claude-plugin/marketplace.json", "plugins/provod/.claude-plugin/plugin.json"):
             (self.root / rel).parent.mkdir(parents=True, exist_ok=True)
             (self.root / rel).write_text("public\n", encoding="utf-8")
-        self.write_json(".codex-plugin/plugin.json", {"mcp": {"transport": "streamable_http", "url": ENDPOINT, "auth": "oauth", "install": "on_install", "client_id": PLACEHOLDER}})
+        self.write_json(".codex-plugin/plugin.json", {"name": "provod", "version": "0.1.0", "description": "public", "capabilities": [], "mcp": {"transport": "streamable_http", "url": ENDPOINT, "auth": "oauth", "install": "on_install", "client_id": PLACEHOLDER}})
         self.write_json(".claude-plugin/marketplace.json", {"plugins": [{"source": "./plugins/provod"}]})
-        self.write_json("plugins/provod/.claude-plugin/plugin.json", {"mcp": {"type": "streamable_http", "url": ENDPOINT, "auth": {"type": "oauth", "install": "on_install", "client_id": PLACEHOLDER}}})
+        self.write_json("plugins/provod/.claude-plugin/plugin.json", {"name": "provod", "version": "0.1.0", "description": "public", "capabilities": [], "mcp": {"type": "streamable_http", "url": ENDPOINT, "auth": {"type": "oauth", "install": "on_install", "client_id": PLACEHOLDER}}})
 
     def tearDown(self):
         self.tmp.cleanup()
