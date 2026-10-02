@@ -14,6 +14,7 @@ ROOT_REQUIRED = (
 )
 ENDPOINT = "https://api.provod.ai/mcp"
 FORBIDDEN_PLACEHOLDER = "REPLACE_WITH_PROVOD_OAUTH_CLIENT_ID"
+GENERATED_DIRS = {"__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache", ".tox", ".nox"}
 SECRET_PATTERNS = (
     re.compile(r"-----BEGIN [A-Z ]+ PRIVATE KEY-----"),
     re.compile(r"\bAKIA[0-9A-Z]{16}\b"),
@@ -78,7 +79,7 @@ def validate(root: Path) -> list[str]:
         if (
             not path.is_file()
             or ".git" in path.parts
-            or "__pycache__" in path.parts
+            or any(part in GENERATED_DIRS for part in path.parts)
             or path.suffix.lower() in {".png", ".jpg", ".jpeg", ".gif", ".ico", ".pyc", ".pyo"}
         ):
             continue

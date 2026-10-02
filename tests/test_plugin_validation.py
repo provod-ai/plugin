@@ -47,6 +47,10 @@ class PluginValidationTests(unittest.TestCase):
         cache.mkdir(parents=True)
         marker = b"AK" + b"IA" + b"0" * 16
         (cache / "generated.pyc").write_bytes(marker)
+        cache = self.root / ".pytest_cache" / "v" / "cache"
+        cache.mkdir(parents=True)
+        marker = b"AK" + b"IA" + b"0" * 16
+        (cache / "lastfailed").write_bytes(marker)
         self.assertEqual(check(self.root), [])
 
     def test_rejects_stale_client_placeholder(self):
