@@ -5,7 +5,7 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "scripts"))
-from validate_plugin import ENDPOINT, PLACEHOLDER, check
+from validate_plugin import ENDPOINT, check
 
 
 class PluginValidationTests(unittest.TestCase):
@@ -16,9 +16,9 @@ class PluginValidationTests(unittest.TestCase):
                     ".claude-plugin/marketplace.json", "plugins/provod/.claude-plugin/plugin.json"):
             (self.root / rel).parent.mkdir(parents=True, exist_ok=True)
             (self.root / rel).write_text("public\n", encoding="utf-8")
-        self.write_json(".codex-plugin/plugin.json", {"mcp": {"transport": "streamable_http", "url": ENDPOINT, "auth": "oauth", "install": "on_install", "client_id": PLACEHOLDER}})
+        self.write_json(".codex-plugin/plugin.json", {"mcp": {"transport": "streamable_http", "url": ENDPOINT, "auth": "oauth", "install": "on_install"}})
         self.write_json(".claude-plugin/marketplace.json", {"plugins": [{"source": "./plugins/provod"}]})
-        self.write_json("plugins/provod/.claude-plugin/plugin.json", {"mcp": {"type": "streamable_http", "url": ENDPOINT, "auth": {"type": "oauth", "install": "on_install", "client_id": PLACEHOLDER}}})
+        self.write_json("plugins/provod/.claude-plugin/plugin.json", {"mcp": {"type": "streamable_http", "url": ENDPOINT, "auth": {"type": "oauth", "install": "on_install"}}})
         self.write_json("mcp.json", {"mcpServers": {"provod": {"type": "streamable-http", "url": ENDPOINT}}})
 
     def tearDown(self):
@@ -41,6 +41,14 @@ class PluginValidationTests(unittest.TestCase):
     def test_rejects_credentials_and_private_paths(self):
         (self.root / ".env").write_text("TOKEN=secret", encoding="utf-8")
         self.assertTrue(any("private credential-like path" in error for error in check(self.root)))
+
+    def test_rejects_stale_client_placeholder(self):
+        (self.root / "oauth.json").write_text(
+            '{"client_id": "REPLACE_WITH_PROVOD_OAUTH_CLIENT_ID"}',
+            encoding="utf-8",
+        )
+        errors = check(self.root)
+        self.assertTrue(any("stale OAuth client placeholder" in error for error in errors))
 
     def test_rejects_stdio_fallback(self):
         self.write_json("mcp.json", {"mcpServers": {"provod": {"type": "stdio", "command": "provod"}}})

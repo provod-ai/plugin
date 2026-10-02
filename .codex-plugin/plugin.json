@@ -12,7 +12,6 @@
     "transport": "streamable_http",
     "url": "https://api.provod.ai/mcp",
     "auth": "oauth",
-    "install": "on_install",
-    "client_id": "REPLACE_WITH_PROVOD_OAUTH_CLIENT_ID"
+    "install": "on_install"
   }
 }

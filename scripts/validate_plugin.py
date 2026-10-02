@@ -13,7 +13,7 @@ ROOT_REQUIRED = (
     "plugins/provod/.claude-plugin/plugin.json",
 )
 ENDPOINT = "https://api.provod.ai/mcp"
-PLACEHOLDER = "REPLACE_WITH_PROVOD_OAUTH_CLIENT_ID"
+FORBIDDEN_PLACEHOLDER = "REPLACE_WITH_PROVOD_OAUTH_CLIENT_ID"
 SECRET_PATTERNS = (
     re.compile(r"-----BEGIN [A-Z ]+ PRIVATE KEY-----"),
     re.compile(r"\bAKIA[0-9A-Z]{16}\b"),
@@ -39,7 +39,7 @@ def validate(root: Path) -> list[str]:
     codex = docs.get(".codex-plugin/plugin.json")
     if isinstance(codex, dict):
         mcp = codex.get("mcp", {})
-        expected = {"transport": "streamable_http", "url": ENDPOINT, "auth": "oauth", "install": "on_install", "client_id": PLACEHOLDER}
+        expected = {"transport": "streamable_http", "url": ENDPOINT, "auth": "oauth", "install": "on_install"}
         for key, value in expected.items():
             if not isinstance(mcp, dict) or mcp.get(key) != value:
                 errors.append(f"Codex MCP {key} must be {value!r}")
@@ -58,7 +58,7 @@ def validate(root: Path) -> list[str]:
         for key, value in expected:
             if not isinstance(mcp, dict) or mcp.get(key) != value:
                 errors.append(f"Claude MCP {key} must be {value!r}")
-        for key, value in (("type", "oauth"), ("install", "on_install"), ("client_id", PLACEHOLDER)):
+        for key, value in (("type", "oauth"), ("install", "on_install")):
             if not isinstance(auth, dict) or auth.get(key) != value:
                 errors.append(f"Claude OAuth {key} must be {value!r}")
     portable = docs.get("mcp.json")
@@ -81,6 +81,8 @@ def validate(root: Path) -> list[str]:
             text = path.read_text(encoding="utf-8")
         except UnicodeDecodeError:
             continue
+        if path.parent.name not in {"tests", "scripts"} and FORBIDDEN_PLACEHOLDER in text:
+            errors.append(f"stale OAuth client placeholder in {path.relative_to(root)}")
         for pattern in SECRET_PATTERNS:
             if pattern.search(text):
                 errors.append(f"possible credential in {path.relative_to(root)}")

@@ -10,6 +10,6 @@
   "mcp": {
     "type": "streamable_http",
     "url": "https://api.provod.ai/mcp",
-    "auth": { "type": "oauth", "install": "on_install", "client_id": "REPLACE_WITH_PROVOD_OAUTH_CLIENT_ID" }
+    "auth": { "type": "oauth", "install": "on_install" }
   }
 }

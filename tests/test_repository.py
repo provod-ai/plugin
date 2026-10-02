@@ -31,7 +31,7 @@ class RepositoryContractTests(unittest.TestCase):
         self.assertEqual(server["url"], "https://api.provod.ai/mcp")
         self.assertEqual(server["auth"], "oauth")
         self.assertEqual(server["install"], "on_install")
-        self.assertTrue(server["client_id"].startswith("REPLACE_WITH_"))
+        self.assertNotIn("client_id", server)
 
     def test_claude_manifest_uses_same_endpoint(self):
         manifest = self.load_json("plugins/provod/.claude-plugin/plugin.json")
