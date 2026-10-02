@@ -43,7 +43,7 @@ class RepositoryContractTests(unittest.TestCase):
     def test_public_files_contain_no_obvious_secrets(self):
         secret_terms = ("-" * 5 + "BEGIN RSA PRIVATE KEY" + "-" * 5, "gh" + "p_", "AK" + "IA")
         for path in ROOT.rglob("*"):
-            if path.is_file() and ".git" not in path.parts and path.parent.name not in {"tests", "scripts"}:
+            if path.is_file() and ".git" not in path.parts and "__pycache__" not in path.parts and path.suffix.lower() not in {".pyc", ".pyo"} and path.parent.name not in {"tests", "scripts"}:
                 text = path.read_text(encoding="utf-8", errors="ignore")
                 for term in secret_terms:
                     self.assertNotIn(term, text, str(path))

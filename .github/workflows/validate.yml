@@ -1,15 +1,17 @@
 name: Validate plugin
 
 on:
-  push:
-  pull_request:
+  workflow_dispatch:
 
+# Automatic GitHub-hosted runners are intentionally disabled. Run this workflow
+# manually only after a self-hosted runner is available; local validation remains
+# the required gate until then.
 permissions:
   contents: read
 
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       matrix:
         python-version: ['3.11', '3.12', '3.13']

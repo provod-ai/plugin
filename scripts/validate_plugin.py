@@ -75,7 +75,12 @@ def validate(root: Path) -> list[str]:
             if server.get("type") == "stdio" or "command" in server:
                 errors.append("portable MCP must not contain a CLI/stdio fallback")
     for path in root.rglob("*"):
-        if not path.is_file() or ".git" in path.parts or path.suffix.lower() in {".png", ".jpg", ".jpeg", ".gif", ".ico"}:
+        if (
+            not path.is_file()
+            or ".git" in path.parts
+            or "__pycache__" in path.parts
+            or path.suffix.lower() in {".png", ".jpg", ".jpeg", ".gif", ".ico", ".pyc", ".pyo"}
+        ):
             continue
         try:
             text = path.read_text(encoding="utf-8")

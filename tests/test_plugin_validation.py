@@ -42,6 +42,13 @@ class PluginValidationTests(unittest.TestCase):
         (self.root / ".env").write_text("TOKEN=secret", encoding="utf-8")
         self.assertTrue(any("private credential-like path" in error for error in check(self.root)))
 
+    def test_ignores_generated_bytecode_in_public_scan(self):
+        cache = self.root / "scripts" / "__pycache__"
+        cache.mkdir(parents=True)
+        marker = b"AK" + b"IA" + b"0" * 16
+        (cache / "generated.pyc").write_bytes(marker)
+        self.assertEqual(check(self.root), [])
+
     def test_rejects_stale_client_placeholder(self):
         (self.root / "oauth.json").write_text(
             '{"client_id": "REPLACE_WITH_PROVOD_OAUTH_CLIENT_ID"}',
