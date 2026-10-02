@@ -17,9 +17,11 @@ class RepositoryContractTests(unittest.TestCase):
             "README.md",
             "LICENSE",
             "SECURITY.md",
+            "plugin.json",
             ".codex-plugin/plugin.json",
             ".claude-plugin/marketplace.json",
             "plugins/provod/.claude-plugin/plugin.json",
+            "plugins/provod/.mcp.json",
             ".github/workflows/validate.yml",
         ):
             self.assertTrue((ROOT / relative).is_file(), relative)

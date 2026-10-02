@@ -8,9 +8,9 @@ import sys
 from pathlib import Path
 
 ROOT_REQUIRED = (
-    "README.md", "LICENSE", "SECURITY.md",
+    "README.md", "LICENSE", "SECURITY.md", "plugin.json",
     ".codex-plugin/plugin.json", ".claude-plugin/marketplace.json",
-    "plugins/provod/.claude-plugin/plugin.json",
+    "plugins/provod/.claude-plugin/plugin.json", "plugins/provod/.mcp.json",
 )
 ENDPOINT = "https://api.provod.ai/mcp"
 FORBIDDEN_PLACEHOLDER = "REPLACE_WITH_PROVOD_OAUTH_CLIENT_ID"
@@ -37,6 +37,22 @@ def validate(root: Path) -> list[str]:
             docs[str(path.relative_to(root))] = json.loads(path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as exc:
             errors.append(f"invalid JSON {path.relative_to(root)}: {exc}")
+    root_manifest = docs.get("plugin.json")
+    if isinstance(root_manifest, dict):
+        for key in ("$schema", "name", "version", "description"):
+            if not isinstance(root_manifest.get(key), str):
+                errors.append(f"plugin.json {key} must be a string")
+        openai = root_manifest.get("extensions", {}).get("com.openai") if isinstance(root_manifest.get("extensions"), dict) else None
+        interface = openai.get("interface") if isinstance(openai, dict) else None
+        if not isinstance(interface, dict):
+            errors.append("plugin.json extensions.com.openai.interface must be an object")
+        else:
+            for key in ("displayName", "shortDescription", "longDescription", "developerName", "category"):
+                if not isinstance(interface.get(key), str):
+                    errors.append(f"plugin.json OpenAI interface {key} must be a string")
+            capabilities = interface.get("capabilities")
+            if not isinstance(capabilities, list) or not all(isinstance(item, str) for item in capabilities):
+                errors.append("plugin.json OpenAI interface capabilities must be a string list")
     codex = docs.get(".codex-plugin/plugin.json")
     if isinstance(codex, dict):
         mcp = codex.get("mcp", {})
@@ -62,6 +78,17 @@ def validate(root: Path) -> list[str]:
         for key, value in (("type", "oauth"), ("install", "on_install")):
             if not isinstance(auth, dict) or auth.get(key) != value:
                 errors.append(f"Claude OAuth {key} must be {value!r}")
+    claude_mcp = docs.get("plugins/provod/.mcp.json")
+    if isinstance(claude_mcp, dict):
+        servers = claude_mcp.get("mcpServers")
+        server = servers.get("provod") if isinstance(servers, dict) else None
+        if not isinstance(server, dict):
+            errors.append("Claude .mcp.json must define the provod server")
+        else:
+            if server.get("type") != "http":
+                errors.append("Claude .mcp.json provod type must be 'http'")
+            if server.get("url") != ENDPOINT:
+                errors.append(f"Claude .mcp.json provod url must be {ENDPOINT!r}")
     portable = docs.get("mcp.json")
     if isinstance(portable, dict):
         servers = portable.get("mcpServers")

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "provod",
+  "version": "0.1.0",
+  "description": "Discover live AI models, create images and videos, and manage media through Provod's hosted MCP service.",
+  "author": {
+    "name": "Provod",
+    "url": "https://provod.ai"
+  },
+  "homepage": "https://provod.ai",
+  "repository": "https://github.com/provod-ai/plugin",
+  "license": "Apache-2.0",
+  "keywords": ["image generation", "video generation", "media", "creative AI", "MCP"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Provod AI",
+        "shortDescription": "Live model discovery, image/video generation, and media workflows.",
+        "longDescription": "Connect Codex to Provod's hosted creative AI workspace. Explore live models, submit asynchronous image and video jobs, upload or import reference media, wait for results, and inspect account data. Purchases require explicit confirmation.",
+        "developerName": "Provod",
+        "category": "Productivity",
+        "capabilities": ["models_explore", "generate_image", "generate_video", "media_upload", "media_import_url", "jobs_wait", "show_generations", "balance", "transactions", "list_workspaces", "show_plans_and_credits", "confirm_billing_purchase"],
+        "websiteURL": "https://provod.ai",
+        "privacyPolicyURL": "REPLACE_WITH_PRIVACY_POLICY_URL",
+        "termsOfServiceURL": "REPLACE_WITH_TERMS_URL",
+        "brandColor": "#6D5EF5",
+        "composerIcon": "./assets/provod-icon.png",
+        "logo": "./assets/provod-icon.png"
+      }
+    }
+  }
+}
